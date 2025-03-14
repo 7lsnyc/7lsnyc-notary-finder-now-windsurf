@@ -1,16 +1,19 @@
 import { fetchNotaries } from '@/lib/data/notaries';
-import NotaryCard from '@/components/NotaryCard';
 
 export default async function Home() {
   const notaries = await fetchNotaries({}, 10, 0);
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">Notary Finder Now</h1>
-      <div className="grid gap-4 mt-4">
+    <div>
+      <h1>Notary Finder Now</h1> {/* Updated title */}
+      <ul>
         {notaries.map((notary) => (
-          <NotaryCard key={notary.id} notary={notary} />
+          <li key={notary.id}>
+            {notary.name} - {notary.city}, {notary.state} {notary.zip}
+            {notary.rating && ` (Rating: ${notary.rating})`}
+            {notary.is_available_now && ' (Available Now)'}
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

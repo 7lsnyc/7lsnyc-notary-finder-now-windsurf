@@ -17,9 +17,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "baseUrl": ".",  // Add this line
-    "paths": {       // Add this block
-      "@/*": ["./src/*"]
+    "baseUrl": "src", // Change from "." to "src"
+    "paths": {
+      "@/*": ["*"] // Change from "./src/*" to "*" since baseUrl is now src
     },
     "plugins": [
       {
