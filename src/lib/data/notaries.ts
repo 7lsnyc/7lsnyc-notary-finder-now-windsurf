@@ -25,4 +25,4 @@ export async function fetchNotaries(
   const { data, error } = await query;
   if (error) throw new Error(error.message);
   return data as Notary[] || [];
-}
+}   
