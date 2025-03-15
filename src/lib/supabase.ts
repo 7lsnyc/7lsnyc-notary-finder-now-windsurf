@@ -6,20 +6,15 @@ let supabase: ReturnType<typeof createClient<Database>> | null = null;
 export function getSupabaseClient() {
   if (supabase) return supabase;
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
     throw new Error('Missing Supabase environment variables');
   }
 
-  // Remove any whitespace and validate URL
+  // Clean URL by removing any whitespace
   const cleanUrl = supabaseUrl.replace(/\s+/g, '');
-  try {
-    new URL(cleanUrl);
-  } catch (error) {
-    throw new Error(`Invalid Supabase URL format: ${error.message}`);
-  }
 
   supabase = createClient<Database>(cleanUrl, supabaseKey, {
     auth: {
@@ -30,7 +25,7 @@ export function getSupabaseClient() {
   return supabase;
 }
 
-// Simple health check function that doesn't require Supabase
-export async function checkHealth() {
+// Simple health check that doesn't require database access
+export function checkHealth() {
   return { ok: true, message: 'Service is running' };
 }

@@ -3,6 +3,13 @@ import { checkHealth } from '@/lib/supabase';
 
 // Simple health check endpoint
 export async function GET() {
-  const status = await checkHealth();
-  return NextResponse.json(status);
+  try {
+    const health = checkHealth();
+    return NextResponse.json(health);
+  } catch (error) {
+    return NextResponse.json(
+      { ok: false, message: 'Service error' },
+      { status: 500 }
+    );
+  }
 }
