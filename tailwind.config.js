@@ -16,6 +16,10 @@ module.exports = {
           dark: '#333333',
           light: '#FFFFFF',
         },
+        footer: {
+          bg: '#1F2937',
+          text: '#9CA3AF',
+        },
         gray: '#CCCCCC',
         success: '#28A745',
       },
