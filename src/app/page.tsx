@@ -77,6 +77,3 @@ export default function Home() {
     </div>
   );
 }
-
-// Revalidate homepage once per day
-export const revalidate = 86400;
