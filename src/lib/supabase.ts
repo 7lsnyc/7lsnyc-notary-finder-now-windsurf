@@ -1,40 +1,36 @@
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/types/supabase';
 
-// Clean and validate Supabase URL
-const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseUrl = rawUrl?.trim().replace(/\s+/g, '');
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
+let supabase: ReturnType<typeof createClient<Database>> | null = null;
 
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase environment variables');
-}
+export function getSupabaseClient() {
+  if (supabase) return supabase;
 
-// Validate URL format
-try {
-  new URL(supabaseUrl);
-} catch (error) {
-  throw new Error(`Invalid Supabase URL format: ${error.message}`);
-}
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseKey, {
-  auth: {
-    persistSession: false
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Missing Supabase environment variables');
   }
-});
 
-// Simple health check function
-export async function checkSupabaseConnection() {
+  // Remove any whitespace and validate URL
+  const cleanUrl = supabaseUrl.replace(/\s+/g, '');
   try {
-    const { data, error } = await supabase
-      .from('notaries')
-      .select('id')
-      .limit(1);
-    
-    if (error) throw error;
-    return { ok: true, message: 'Connected to Supabase' };
+    new URL(cleanUrl);
   } catch (error) {
-    console.error('Supabase connection error:', error);
-    return { ok: false, message: 'Failed to connect to Supabase' };
+    throw new Error(`Invalid Supabase URL format: ${error.message}`);
   }
+
+  supabase = createClient<Database>(cleanUrl, supabaseKey, {
+    auth: {
+      persistSession: false
+    }
+  });
+
+  return supabase;
+}
+
+// Simple health check function that doesn't require Supabase
+export async function checkHealth() {
+  return { ok: true, message: 'Service is running' };
 }

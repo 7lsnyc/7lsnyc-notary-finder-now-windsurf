@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
+import { checkHealth } from '@/lib/supabase';
 
 // Simple health check endpoint
 export async function GET() {
-  return NextResponse.json({ ok: true, message: 'Service is running' });
+  const status = await checkHealth();
+  return NextResponse.json(status);
 }

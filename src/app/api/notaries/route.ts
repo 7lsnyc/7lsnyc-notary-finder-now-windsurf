@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { getSupabaseClient } from '@/lib/supabase';
 
 // Mark route as dynamic since it uses search params
 export const dynamic = 'force-dynamic';
@@ -7,45 +7,44 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const page = Number(searchParams.get('page')) || 1;
-    const per_page = Number(searchParams.get('per_page')) || 10;
-    const location = searchParams.get('location');
-    const service = searchParams.get('service');
+    const city = searchParams.get('city');
+    const state = searchParams.get('state');
+    const services = searchParams.get('services');
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = 10;
+    const offset = (page - 1) * limit;
 
-    const offset = (page - 1) * per_page;
+    const supabase = getSupabaseClient();
 
+    // Build query with filters
     let query = supabase
       .from('notaries')
-      .select('id, name, city, state, services, rating, review_count, profile_image_url, about', { count: 'exact' })
-      .order('rating', { ascending: false })
-      .range(offset, offset + per_page - 1);
+      .select('*', { count: 'exact' });
 
-    // Apply filters based on PRD requirements
-    if (location) {
-      query = query.or(`city.ilike.%${location}%,state.ilike.%${location}%`);
-    }
-    if (service) {
-      query = query.contains('services', [service]);
+    if (city) query = query.ilike('city', `%${city}%`);
+    if (state) query = query.eq('state', state);
+    if (services) {
+      const servicesList = services.split(',');
+      query = query.contains('services', servicesList);
     }
 
-    const { data, count, error } = await query;
-    
-    if (error) {
-      console.error('Error fetching notaries:', error);
-      return NextResponse.json(
-        { error: 'Failed to fetch notaries' },
-        { status: 500 }
-      );
-    }
+    // Add pagination
+    const { data, count, error } = await query
+      .range(offset, offset + limit - 1)
+      .order('rating', { ascending: false });
+
+    if (error) throw error;
 
     return NextResponse.json({
       notaries: data || [],
-      total: count || 0
+      total: count || 0,
+      page,
+      totalPages: Math.ceil((count || 0) / limit)
     });
   } catch (error) {
-    console.error('Error in notaries API:', error);
+    console.error('Error fetching notaries:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to fetch notaries' },
       { status: 500 }
     );
   }
