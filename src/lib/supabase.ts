@@ -15,8 +15,15 @@ export function getSupabaseClient() {
       throw new Error('Missing Supabase environment variables');
     }
 
-    // Clean URL by removing any whitespace
-    const cleanUrl = url.trim().replace(/\s+/g, '');
+    // Clean and format URL properly
+    const cleanUrl = url.trim()
+      .replace(/\s+/g, '')  // Remove all whitespace
+      .replace(/\/+$/, '')  // Remove trailing slashes
+      .replace(/\/auth\/v1$/, ''); // Remove auth/v1 if present
+
+    if (!cleanUrl.startsWith('https://')) {
+      throw new Error('Supabase URL must start with https://');
+    }
 
     supabase = createClient<Database>(cleanUrl, key.trim(), {
       auth: { persistSession: false }
