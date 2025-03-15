@@ -39,7 +39,7 @@ export function Logo({ className }: LogoProps) {
           />
         </svg>
       </div>
-      <span className="font-inter font-bold text-[18px]">
+      <span className="block font-inter font-bold text-[20px] leading-none text-text-dark">
         Notary Finder Now
       </span>
     </div>

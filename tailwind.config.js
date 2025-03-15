@@ -33,6 +33,7 @@ module.exports = {
         h3: '18px',
         body: '14px',
         small: '12px',
+        logo: '20px',
       },
       spacing: {
         section: '20px',
