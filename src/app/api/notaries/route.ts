@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
+// Mark route as dynamic since it uses search params
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -19,17 +22,8 @@ export async function GET(request: Request) {
 
     // Apply filters based on PRD requirements
     if (location) {
-      // Split location into parts to handle "City, State" format
-      const parts = location.split(',').map(part => part.trim());
-      if (parts.length > 1) {
-        // If location includes both city and state
-        query = query.eq('city', parts[0]).eq('state', parts[1]);
-      } else {
-        // If location is just city or state
-        query = query.or(`city.ilike.%${parts[0]}%,state.ilike.%${parts[0]}%`);
-      }
+      query = query.or(`city.ilike.%${location}%,state.ilike.%${location}%`);
     }
-
     if (service) {
       query = query.contains('services', [service]);
     }
