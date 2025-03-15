@@ -1,36 +1,22 @@
-// src/app/layout.tsx
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
-import { Poppins, Inter } from 'next/font/google';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-poppins',
-  display: 'swap',
-});
+const inter = Inter({ subsets: ['latin'] });
 
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Notary Finder Now',
   description: 'Find qualified notaries in your area instantly',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className={`${poppins.variable} ${inter.variable}`}>
-      <body className="min-h-screen bg-background font-poppins">
-        <Header />
-        <main>{children}</main>
-        <Footer />
-      </body>
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
