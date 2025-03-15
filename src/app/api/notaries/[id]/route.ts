@@ -1,29 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
+// Simple API route for fetching a single notary
 export async function GET(
-  request: NextRequest,
-  context: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: { id: string } }
 ) {
-  try {
-    const { data: notary, error } = await supabase
-      .from('notaries')
-      .select('*')
-      .eq('id', context.params.id)
-      .single();
+  const { data, error } = await supabase
+    .from('notaries')
+    .select('*')
+    .eq('id', params.id)
+    .single();
 
-    if (error || !notary) {
-      return NextResponse.json(
-        { error: 'Notary not found' },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json(notary);
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+  if (error || !data) {
+    return NextResponse.json({ error: 'Notary not found' }, { status: 404 });
   }
+
+  return NextResponse.json(data);
 }
