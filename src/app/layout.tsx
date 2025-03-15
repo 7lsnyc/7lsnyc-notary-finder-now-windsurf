@@ -1,24 +1,27 @@
-import type { Metadata } from 'next';
 import { Inter, Poppins } from 'next/font/google';
+import { Header } from '@/design-system/components/molecules/Header';
+import { generateMetadata } from './metadata';
 import './globals.css';
 
-const inter = Inter({
+const inter = Inter({ 
   subsets: ['latin'],
-  display: 'swap',
+  weight: '400',
   variable: '--font-inter',
 });
 
-const poppins = Poppins({
-  weight: ['400', '500', '700'],
+const poppins = Poppins({ 
   subsets: ['latin'],
-  display: 'swap',
+  weight: ['700'],  // Bold for headers per PRD
   variable: '--font-poppins',
 });
 
-export const metadata: Metadata = {
-  title: 'Notary Finder Now',
-  description: 'Find qualified notaries near you instantly',
-};
+// Only navigation items specified in PRD
+const navigation = [
+  { label: 'Find a Notary', href: '/notaries' },
+  { label: 'Services', href: '/services' },
+];
+
+export { generateMetadata as generateMetadata };
 
 export default function RootLayout({
   children,
@@ -26,8 +29,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
-      <body className="font-inter">{children}</body>
+    <html lang="en" className={`${inter.className} ${poppins.variable}`}>
+      <body className="text-[#333333] text-[14px]"> {/* PRD text color and size */}
+        <Header
+          navigation={navigation}
+          brandName="Notary Finder Now"
+        />
+        <main className="min-h-screen">{children}</main>
+      </body>
     </html>
   );
 }

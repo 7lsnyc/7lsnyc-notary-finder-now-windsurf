@@ -142,3 +142,4 @@ dist
 # Vim swap files
 *.swp
 **/*.swp
+.vercel

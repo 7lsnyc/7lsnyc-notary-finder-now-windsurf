@@ -2,8 +2,8 @@ import React from 'react';
 import { render as rtlRender } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-// Custom render that includes providers if needed
-function render(ui: React.ReactElement, options = {}) {
+// Custom render for components that don't include html/body tags
+function customRender(ui: React.ReactElement, options = {}) {
   return {
     user: userEvent.setup(),
     ...rtlRender(ui, {
@@ -15,7 +15,7 @@ function render(ui: React.ReactElement, options = {}) {
 
 // Re-export everything
 export * from '@testing-library/react';
-export { render };
+export { customRender as render };
 
 // Common test data based on our type definitions
 export const mockNotaryProfile = {

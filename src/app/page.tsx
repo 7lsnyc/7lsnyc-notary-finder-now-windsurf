@@ -24,6 +24,7 @@ export default function Home() {
         <h1 className="text-4xl font-bold mb-4 font-poppins">
           Find a Qualified Notary Near<br />You — Now!
         </h1>
+        
         <p className="text-xl mb-8 font-inter">
           Connect with mobile, 24-hour, and free notary services in your area instantly.
         </p>
