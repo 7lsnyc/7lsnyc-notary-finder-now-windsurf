@@ -1,7 +1,12 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import { Logo } from './Logo';
+import { brandConfig } from '../../../config/brand';
 
 describe('Logo', () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it('renders with default props', () => {
     render(<Logo />);
     
@@ -28,20 +33,23 @@ describe('Logo', () => {
     expect(screen.getByText('Custom Brand')).toBeInTheDocument();
   });
 
-  it('renders with different variants', () => {
-    const { rerender } = render(<Logo variant="small" />);
-    expect(screen.getByTestId('logo-square')).toHaveClass('w-6', 'h-6');
-    expect(screen.getByTestId('logo-text')).toHaveClass('text-[16px]');
-
-    rerender(<Logo variant="large" />);
-    expect(screen.getByTestId('logo-square')).toHaveClass('w-10', 'h-10');
-    expect(screen.getByTestId('logo-text')).toHaveClass('text-[24px]');
+  it.each(Object.entries(brandConfig.logo.variants))('renders %s size variant correctly', (variant, config) => {
+    render(<Logo variant={variant as keyof typeof brandConfig.logo.variants} />);
+    expect(screen.getByTestId('logo-square')).toHaveClass(config.iconSize);
+    expect(screen.getByTestId('logo-text')).toHaveClass(config.textSize);
   });
 
-  it('applies custom colors', () => {
-    render(<Logo textColor="text-blue-500" iconColor="text-red-500" />);
-    expect(screen.getByTestId('logo-text')).toHaveClass('text-blue-500');
-    expect(screen.getByTestId('logo-icon')).toHaveClass('text-red-500');
+  it.each(Object.entries(brandConfig.logo.layout))('renders %s layout variant correctly', (layout, config) => {
+    render(<Logo layout={layout as keyof typeof brandConfig.logo.layout} />);
+    expect(screen.getByTestId('logo')).toHaveClass(config.container);
+    expect(screen.getByTestId('logo-square')).toHaveClass(config.iconPosition);
+  });
+
+  it.each(Object.entries(brandConfig.logo.themes))('renders %s theme variant correctly', (theme, config) => {
+    render(<Logo theme={theme as keyof typeof brandConfig.logo.themes} />);
+    expect(screen.getByTestId('logo-square')).toHaveClass(config.icon.background);
+    expect(screen.getByTestId('logo-icon')).toHaveClass(config.icon.foreground);
+    expect(screen.getByTestId('logo-text')).toHaveClass(config.text);
   });
 
   it('accepts custom icon component', () => {

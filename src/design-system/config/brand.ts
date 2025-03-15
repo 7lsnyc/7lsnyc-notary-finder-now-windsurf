@@ -2,6 +2,10 @@ export const brandConfig = {
   name: 'Notary Finder Now',
   logo: {
     variants: {
+      xs: {
+        iconSize: 'w-4 h-4',
+        textSize: 'text-[14px]',
+      },
       small: {
         iconSize: 'w-6 h-6',
         textSize: 'text-[16px]',
@@ -14,13 +18,51 @@ export const brandConfig = {
         iconSize: 'w-10 h-10',
         textSize: 'text-[24px]',
       },
-    },
-    colors: {
-      icon: {
-        background: 'bg-primary',
-        foreground: 'text-white',
+      xl: {
+        iconSize: 'w-12 h-12',
+        textSize: 'text-[32px]',
       },
-      text: 'text-text-dark',
+    },
+    layout: {
+      horizontal: {
+        container: 'flex items-center gap-2',
+        iconPosition: 'order-first',
+      },
+      vertical: {
+        container: 'flex flex-col items-center gap-1',
+        iconPosition: 'order-first',
+      },
+      verticalReverse: {
+        container: 'flex flex-col items-center gap-1',
+        iconPosition: 'order-last',
+      },
+      horizontalReverse: {
+        container: 'flex items-center gap-2',
+        iconPosition: 'order-last',
+      },
+    },
+    themes: {
+      light: {
+        icon: {
+          background: 'bg-primary',
+          foreground: 'text-white',
+        },
+        text: 'text-text-dark',
+      },
+      dark: {
+        icon: {
+          background: 'bg-white',
+          foreground: 'text-primary',
+        },
+        text: 'text-white',
+      },
+      minimal: {
+        icon: {
+          background: 'bg-transparent',
+          foreground: 'text-primary',
+        },
+        text: 'text-text-dark',
+      },
     },
   },
 } as const;
