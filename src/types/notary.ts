@@ -1,4 +1,5 @@
 // src/types/notary.ts
+// Keep types minimal and aligned with PRD requirements
 export interface Notary {
   id: string;
   name: string;
@@ -7,11 +8,13 @@ export interface Notary {
   services: string[];
   rating: number;
   review_count: number;
-  profile_image_url?: string;
-  about?: string;
+  profile_image_url: string | null;
+  about: string | null;
 }
 
 export interface NotaryFilters {
+  id?: string;
   location?: string;
   service?: string;
+  rating?: number;
 }
