@@ -1,62 +1,66 @@
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
+import { Logo } from '../../atoms/Logo';
 
 interface HeaderProps {
   navigation: Array<{
     label: string;
     href: string;
   }>;
-  brandName: string;
   className?: string;
 }
 
 export function Header({
   navigation,
-  brandName,
   className,
 }: HeaderProps) {
   return (
-    <header className={twMerge('bg-[#007BFF] shadow-[0_2px_4px_rgba(0,0,0,0.1)]', className)}>
-      <div className="max-w-7xl mx-auto px-[20px]"> {/* PRD section padding */}
-        <div className="flex justify-between h-[50px] items-center"> {/* PRD button height */}
-          {/* Brand */}
-          <Link 
-            href="/" 
-            className="text-white font-poppins font-bold text-[24px]" /* PRD H1 size */
-          >
-            {brandName}
+    <header className={twMerge('bg-white shadow-[0_2px_4px_rgba(0,0,0,0.1)]', className)}>
+      <div className="max-w-7xl mx-auto px-[20px]">
+        <div className="flex items-center h-[70px] justify-between">
+          {/* Logo */}
+          <Link href="/" className="shrink-0">
+            <Logo />
           </Link>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex gap-[20px]"> {/* PRD section padding */}
+          {/* Navigation - centered */}
+          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-[20px]">
             {navigation.map(({ label, href }) => (
               <Link
                 key={href}
                 href={href}
-                className="text-white hover:text-[#E6F0FA] transition-colors duration-200 font-inter text-[14px]" /* PRD body text */
+                className="text-text-dark hover:text-primary transition-colors duration-200 font-inter text-[14px]"
               >
                 {label}
               </Link>
             ))}
           </nav>
 
+          {/* CTA Button */}
+          <Link
+            href="/request-listing"
+            className="hidden md:block bg-accent text-white px-4 py-2 rounded-[8px] font-inter text-[14px] hover:bg-accent/90 transition-colors"
+          >
+            Request Featured Listing
+          </Link>
+
           {/* Mobile menu button */}
           <button
             type="button"
-            className="md:hidden p-[10px] rounded-[8px] text-white" /* PRD component padding and border radius */
+            className="md:hidden p-[10px] rounded-[8px] text-text-dark"
             aria-label="Open menu"
           >
             <svg
-              className="h-6 w-6"
+              className="w-6 h-6"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth="1.5"
               stroke="currentColor"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
           </button>

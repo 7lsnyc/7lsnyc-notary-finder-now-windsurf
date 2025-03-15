@@ -1,46 +1,51 @@
-import { render, screen } from '@/test';
+import { render, screen } from '@testing-library/react';
 import RootLayout from './layout';
 
-const LayoutContent = ({ children }: { children: React.ReactNode }) => {
-  // Extract body content from layout for testing
-  const layout = RootLayout({ children });
-  const body = (layout as any).props.children;
-  return body;
-};
-
 describe('RootLayout', () => {
-  it('renders header with PRD-specified navigation', () => {
+  it('renders header with navigation items from design', () => {
     render(
-      <LayoutContent>
+      <RootLayout>
         <div>Test content</div>
-      </LayoutContent>
+      </RootLayout>
     );
 
-    // Check brand name
+    // Logo
     expect(screen.getByText('Notary Finder Now')).toBeInTheDocument();
 
-    // Check only navigation items specified in PRD
+    // Navigation items
+    expect(screen.getByText('Home')).toBeInTheDocument();
     expect(screen.getByText('Find a Notary')).toBeInTheDocument();
     expect(screen.getByText('Services')).toBeInTheDocument();
+    expect(screen.getByText('About')).toBeInTheDocument();
+    expect(screen.getByText('Contact')).toBeInTheDocument();
 
-    // Verify non-PRD items are not present
-    expect(screen.queryByText('About')).not.toBeInTheDocument();
-    expect(screen.queryByText('Contact')).not.toBeInTheDocument();
-    expect(screen.queryByText('Request Featured Listing')).not.toBeInTheDocument();
-
-    // Check children are rendered
-    expect(screen.getByText('Test content')).toBeInTheDocument();
+    // CTA Button
+    expect(screen.getByText('Request Featured Listing')).toBeInTheDocument();
   });
 
-  it('applies PRD-specified styles', () => {
-    const { container } = render(
-      <LayoutContent>
+  it('applies design-specified styles', () => {
+    render(
+      <RootLayout>
         <div>Test content</div>
-      </LayoutContent>
+      </RootLayout>
     );
 
-    const body = container.firstChild;
-    expect(body).toHaveClass('text-[#333333]');
-    expect(body).toHaveClass('text-[14px]');
+    // Header styles
+    const header = screen.getByRole('banner');
+    expect(header).toHaveClass('bg-white');
+
+    // Navigation links
+    const navLinks = screen.getAllByRole('link');
+    navLinks.forEach(link => {
+      if (!link.textContent?.includes('Request Featured Listing') && !link.textContent?.includes('Notary Finder Now')) {
+        expect(link).toHaveClass('text-text-dark');
+        expect(link).toHaveClass('hover:text-primary');
+      }
+    });
+
+    // CTA button
+    const ctaButton = screen.getByText('Request Featured Listing');
+    expect(ctaButton).toHaveClass('bg-accent');
+    expect(ctaButton).toHaveClass('text-white');
   });
 });

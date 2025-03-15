@@ -1,62 +1,53 @@
-import { render, screen } from '@/test';
+import { render, screen } from '@testing-library/react';
 import { Header } from './Header';
 
-// Only navigation items specified in PRD
-const mockNavigation = [
-  { label: 'Find a Notary', href: '/notaries' },
-  { label: 'Services', href: '/services' },
-];
-
 describe('Header', () => {
-  it('renders brand name and navigation links', () => {
-    render(
-      <Header
-        navigation={mockNavigation}
-        brandName="Notary Finder Now"
-      />
-    );
+  const mockNavigation = [
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+  ];
 
-    // Check brand name
-    expect(screen.getByText('Notary Finder Now')).toBeInTheDocument();
-
-    // Check navigation links
-    mockNavigation.forEach(({ label }) => {
-      expect(screen.getByText(label)).toBeInTheDocument();
+  it('renders navigation items correctly', () => {
+    render(<Header navigation={mockNavigation} />);
+    
+    mockNavigation.forEach(item => {
+      const link = screen.getByText(item.label);
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute('href', item.href);
     });
   });
 
-  it('applies custom className', () => {
-    const customClass = 'custom-header';
-    const { container } = render(
-      <Header
-        navigation={mockNavigation}
-        brandName="Notary Finder Now"
-        className={customClass}
-      />
-    );
-
-    expect(container.firstChild).toHaveClass(customClass);
-  });
-
-  it('applies PRD-specified styles', () => {
-    const { container } = render(
-      <Header
-        navigation={mockNavigation}
-        brandName="Notary Finder Now"
-      />
-    );
+  it('applies design-specified styles', () => {
+    const { container } = render(<Header navigation={mockNavigation} />);
 
     const header = container.firstChild as HTMLElement;
-    expect(header).toHaveClass('bg-[#007BFF]');
+    expect(header).toHaveClass('bg-white');
     expect(header).toHaveClass('shadow-[0_2px_4px_rgba(0,0,0,0.1)]');
 
-    const brandLink = screen.getByText('Notary Finder Now');
-    expect(brandLink).toHaveClass('text-[24px]');
-    expect(brandLink).toHaveClass('font-poppins');
-    expect(brandLink).toHaveClass('font-bold');
+    const brandLink = screen.getByText('Notary Finder Now').closest('a');
+    expect(brandLink).toHaveClass('shrink-0');
 
-    const navLink = screen.getByText('Find a Notary');
-    expect(navLink).toHaveClass('text-[14px]');
-    expect(navLink).toHaveClass('font-inter');
+    const navLinks = screen.getAllByRole('link');
+    navLinks.forEach(link => {
+      if (mockNavigation.some(item => item.label === link.textContent)) {
+        expect(link).toHaveClass('text-text-dark');
+        expect(link).toHaveClass('hover:text-primary');
+      }
+    });
+
+    const ctaButton = screen.getByText('Request Featured Listing');
+    expect(ctaButton).toHaveClass('bg-accent');
+    expect(ctaButton).toHaveClass('text-white');
+  });
+
+  it('is responsive', () => {
+    render(<Header navigation={mockNavigation} />);
+    
+    const nav = screen.getByRole('navigation');
+    expect(nav).toHaveClass('hidden');
+    expect(nav).toHaveClass('md:flex');
+
+    const menuButton = screen.getByLabelText('Open menu');
+    expect(menuButton).toHaveClass('md:hidden');
   });
 });

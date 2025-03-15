@@ -8,11 +8,15 @@ export default function Home() {
   const [location, setLocation] = useState('');
   const [service, setService] = useState('');
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (location.trim()) {
+    const formData = new FormData(e.currentTarget);
+    const location = formData.get('location')?.toString() || '';
+    const service = formData.get('service')?.toString() || '';
+    
+    if (location) {
       const params = new URLSearchParams();
-      params.set('location', location.trim());
+      params.set('location', location);
       if (service) params.set('service', service);
       router.push(`/notaries?${params.toString()}`);
     }
@@ -20,16 +24,20 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-primary">
-      <div className="max-w-3xl mx-auto px-4 py-20 text-center text-text-light">
-        <h1 className="text-4xl font-bold mb-4 font-poppins">
-          Find a Qualified Notary Near<br />You — Now!
+      <div className="max-w-4xl mx-auto px-4 py-20 text-center text-text-light">
+        <h1 className="text-[30px] md:text-[40px] font-bold mb-4 font-poppins leading-tight">
+          Find a Qualified Notary Near You — Now!
         </h1>
         
         <p className="text-xl mb-8 font-inter">
           Connect with mobile, 24-hour, and free notary services in your area instantly.
         </p>
         
-        <form onSubmit={handleSearch} className="bg-white rounded p-1 flex items-center gap-2 shadow-card">
+        <form 
+          role="form"
+          onSubmit={handleSearch}
+          className="bg-white rounded p-1 flex items-center gap-2 shadow-card"
+        >
           <div className="flex-1 flex items-center gap-2 px-3">
             <svg className="w-5 h-5 text-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -37,15 +45,17 @@ export default function Home() {
             </svg>
             <input
               type="text"
-              placeholder="Enter your location"
+              name="location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               className="flex-1 py-2 focus:outline-none font-inter"
               required
               aria-label="Search by location"
+              placeholder="Enter your location"
             />
           </div>
           <select 
+            name="service"
             className="px-3 py-2 border-l text-text-dark focus:outline-none bg-transparent font-inter"
             value={service}
             onChange={(e) => setService(e.target.value)}
