@@ -1,31 +1,36 @@
 # Notary Finder Now
 
-A directory connecting users with top-rated notaries. Built with Next.js, TypeScript, and Supabase.
+A directory connecting users with top-rated notaries. Features a clean, minimal interface for searching and viewing notary profiles.
 
 ## Core Features
-- Homepage with search and featured notaries
-- Search Results Page with pagination
-- Notary Profile Page
+
+- Homepage with search and top-rated notaries
+- Search results page with pagination
+- Individual notary profile pages
 - Basic styling with Tailwind CSS
 
-## Setup
+## Tech Stack
 
-1. Install dependencies:
-```bash
-npm install
-```
+- Next.js 14.1.0 with TypeScript
+- Supabase for backend
+- Tailwind CSS for styling
 
-2. Set up environment variables:
-Create a `.env.local` file with:
-```
-NEXT_PUBLIC_SUPABASE_URL=your_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-```
+## Getting Started
 
-3. Run development server:
-```bash
-npm run dev
-```
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up environment variables:
+   - Copy `.env.example` to `.env.local`
+   - Add your Supabase credentials
 
-## Deployment
-This project is configured for deployment on Vercel. Environment variables need to be set in the Vercel project settings.
+## Deployment on Vercel
+
+1. Push your code to GitHub
+2. Import your repository in Vercel
+3. Add the following environment variables in Vercel:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. Deploy!
