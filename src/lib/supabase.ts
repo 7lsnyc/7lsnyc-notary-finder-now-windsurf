@@ -6,21 +6,22 @@ let supabase: ReturnType<typeof createClient<Database>> | null = null;
 export function getSupabaseClient() {
   if (supabase) return supabase;
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  // Only initialize client on the server side or in production
+  if (typeof window === 'undefined' || process.env.NODE_ENV === 'production') {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!supabaseUrl || !supabaseKey) {
-    throw new Error('Missing Supabase environment variables');
-  }
-
-  // Clean URL by removing any whitespace
-  const cleanUrl = supabaseUrl.replace(/\s+/g, '');
-
-  supabase = createClient<Database>(cleanUrl, supabaseKey, {
-    auth: {
-      persistSession: false
+    if (!url || !key) {
+      throw new Error('Missing Supabase environment variables');
     }
-  });
+
+    // Clean URL by removing any whitespace
+    const cleanUrl = url.trim().replace(/\s+/g, '');
+
+    supabase = createClient<Database>(cleanUrl, key.trim(), {
+      auth: { persistSession: false }
+    });
+  }
 
   return supabase;
 }
