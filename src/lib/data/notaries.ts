@@ -1,14 +1,40 @@
 /// src/lib/data/notaries.ts
-import { supabase } from '@/lib/supabase';
-import { Notary, NotaryFilters } from '@/types/notary';
+import { getSupabaseClient } from '@/lib/supabase';
+
+// Core types based on PRD requirements
+interface Notary {
+  id: string;
+  name: string;
+  city: string;
+  state: string;
+  services: string[];
+  rating: number;
+  review_count: number;
+}
+
+interface NotaryFilters {
+  city?: string;
+  state?: string;
+  services?: string[];
+}
+
+interface NotarySearchResult {
+  notaries: Notary[];
+  total: number;
+  page: number;
+  totalPages: number;
+}
 
 export async function fetchNotaries(
   filters: NotaryFilters,
-  limit: number = 10,
-  offset: number = 0
-): Promise<{ data: Notary[]; total: number }> {
+  page: number = 1,
+  limit: number = 10
+): Promise<NotarySearchResult> {
   try {
-    // Build the base query with only essential fields from PRD
+    const offset = (page - 1) * limit;
+    const supabase = getSupabaseClient();
+
+    // Build query with essential fields per PRD
     let query = supabase
       .from('notaries')
       .select('*', { count: 'exact' })
@@ -16,27 +42,28 @@ export async function fetchNotaries(
       .order('rating', { ascending: false });
 
     // Apply filters based on PRD requirements
-    if (filters.location) {
-      query = query.ilike('city', `%${filters.location}%`);
+    if (filters.city) {
+      query = query.ilike('city', `%${filters.city}%`);
     }
-    if (filters.service) {
-      query = query.contains('services', [filters.service]);
+    if (filters.state) {
+      query = query.eq('state', filters.state);
+    }
+    if (filters.services?.length) {
+      query = query.contains('services', filters.services);
     }
 
-    // Execute query
     const { data, count, error } = await query;
     
-    if (error) {
-      console.error('Error fetching notaries:', error);
-      throw error;
-    }
+    if (error) throw error;
 
     return {
-      data: data as Notary[],
+      notaries: data || [],
       total: count || 0,
+      page,
+      totalPages: Math.ceil((count || 0) / limit)
     };
   } catch (error) {
-    console.error('fetchNotaries error:', error);
+    console.error('Error fetching notaries:', error);
     throw error;
   }
 }
