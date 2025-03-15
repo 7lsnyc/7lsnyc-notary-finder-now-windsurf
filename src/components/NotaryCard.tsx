@@ -1,130 +1,101 @@
-// src/components/NotaryCard.tsx
-import Image from 'next/image';
-import Link from 'next/link';
-import { StarIcon, PhoneIcon, EnvelopeIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/solid';
+'use client';
+
+import { StarIcon, MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
 import { Notary } from '@/types/notary';
-import { formatCurrency } from '@/utils/format';
 
 interface NotaryCardProps {
   notary: Notary;
-  showActions?: boolean;
 }
 
-export default function NotaryCard({ notary, showActions = true }: NotaryCardProps) {
-  const {
-    id,
-    name,
-    profile_image_url,
-    rating,
-    review_count,
-    city,
-    state,
-    phone,
-    email,
-    is_available_now,
-    starting_price,
-    specialized_services,
-  } = notary;
-
-  // Helper function to get service badges
-  const getServiceBadges = () => {
-    const badges = [];
-    if (specialized_services?.includes('mobile')) {
-      badges.push('Mobile');
-    }
-    if (specialized_services?.includes('24_7')) {
-      badges.push('24/7');
-    }
-    if (starting_price === 0) {
-      badges.push('Free Service Available');
-    }
-    return badges;
-  };
+export default function NotaryCard({ notary }: NotaryCardProps) {
+  const stars = Array.from({ length: 5 }, (_, i) => (
+    <span key={i}>
+      {i < Math.floor(notary.rating) ? (
+        <StarIconSolid className="icon-sm text-primary" />
+      ) : (
+        <StarIcon className="icon-sm text-text-light" />
+      )}
+    </span>
+  ));
 
   return (
-    <div className="group relative p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200">
-      <div className="flex items-start gap-4">
-        {/* Profile Image */}
-        <div className="relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
-          <Image
-            src={profile_image_url || '/images/default-notary.png'}
-            alt={name}
-            fill
-            className="object-cover"
-            sizes="96px"
-          />
-        </div>
-
-        <div className="flex-1 min-w-0">
-          {/* Name and Rating */}
-          <Link href={`/notaries/${id}`} className="hover:text-primary">
-            <h3 className="text-lg font-semibold text-text-dark truncate">{name}</h3>
-          </Link>
-          
-          <div className="flex items-center gap-2 mt-1">
-            <div className="flex items-center">
-              <StarIcon className="h-5 w-5 text-yellow-400" />
-              <span className="ml-1 text-sm font-medium text-text-dark">{rating}</span>
-            </div>
-            <span className="text-sm text-text-light">({review_count} reviews)</span>
-          </div>
-
-          {/* Service Badges */}
-          <div className="flex flex-wrap gap-2 mt-2">
-            {getServiceBadges().map((badge) => (
-              <span
-                key={badge}
-                className="px-2 py-1 text-xs font-medium rounded-full bg-accent-light text-accent-dark"
-              >
-                {badge}
+    <div className="card">
+      <div className="card-body">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h3 className="text-xl font-semibold mb-1">{notary.name}</h3>
+            <div className="flex items-center gap-1 mb-2">
+              {stars}
+              <span className="text-sm text-text-light ml-2">
+                ({notary.reviewCount} reviews)
               </span>
-            ))}
+            </div>
           </div>
-
-          {/* Location and Availability */}
-          <div className="mt-3 flex items-center gap-2 text-sm text-text-light">
-            <MapPinIcon className="h-4 w-4" />
-            <span>{city}, {state}</span>
-            {is_available_now && (
-              <span className="flex items-center text-green-600">
-                <ClockIcon className="h-4 w-4 mr-1" />
+          <div className="flex flex-wrap gap-2">
+            {notary.isAvailableNow && (
+              <span className="badge-success">
+                <ClockIcon className="icon-sm mr-1 inline" />
                 Available Now
               </span>
             )}
+            {notary.acceptsOnlineBooking && (
+              <span className="badge-neutral">Online Booking</span>
+            )}
           </div>
+        </div>
 
-          {/* Price */}
-          <div className="mt-2 text-sm">
-            <span className="font-medium text-text-dark">
-              Starting at {formatCurrency(starting_price)}
-            </span>
+        <div className="space-y-3 mb-4">
+          <div className="flex items-center gap-2 text-text">
+            <MapPinIcon className="icon-sm text-text-light" />
+            <span>{notary.city}, {notary.state}</span>
           </div>
+          {notary.phone && (
+            <div className="flex items-center gap-2 text-text">
+              <PhoneIcon className="icon-sm text-text-light" />
+              <span>{notary.phone}</span>
+            </div>
+          )}
+          {notary.email && (
+            <div className="flex items-center gap-2 text-text">
+              <EnvelopeIcon className="icon-sm text-text-light" />
+              <span>{notary.email}</span>
+            </div>
+          )}
+          <div className="flex items-center gap-2 text-text">
+            <span className="text-text-light">Starting at ${notary.startingPrice}</span>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 mb-4">
+          {notary.services.map((service) => (
+            <span key={service} className="badge-primary">
+              {service.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex gap-3">
+          {notary.phone && (
+            <a
+              href={`tel:${notary.phone}`}
+              className="btn-primary flex-1 flex items-center justify-center"
+            >
+              <PhoneIcon className="icon-sm mr-2" />
+              Call
+            </a>
+          )}
+          {notary.email && (
+            <a
+              href={`mailto:${notary.email}`}
+              className="btn-secondary flex-1 flex items-center justify-center"
+            >
+              <EnvelopeIcon className="icon-sm mr-2" />
+              Email
+            </a>
+          )}
         </div>
       </div>
-
-      {/* Action Buttons */}
-      {showActions && (
-        <div className="mt-4 flex gap-3 justify-end">
-          {email && (
-            <button
-              onClick={() => window.location.href = `mailto:${email}`}
-              className="flex items-center px-3 py-2 text-sm font-medium text-accent-dark hover:bg-accent-light rounded-lg transition-colors"
-            >
-              <EnvelopeIcon className="h-4 w-4 mr-2" />
-              Email
-            </button>
-          )}
-          {phone && (
-            <button
-              onClick={() => window.location.href = `tel:${phone}`}
-              className="flex items-center px-3 py-2 text-sm font-medium text-white bg-primary hover:bg-primary-dark rounded-lg transition-colors"
-            >
-              <PhoneIcon className="h-4 w-4 mr-2" />
-              Call Now
-            </button>
-          )}
-        </div>
-      )}
     </div>
   );
 }

@@ -1,46 +1,92 @@
- // src/app/page.tsx
-import { fetchNotaries } from '@/lib/data/notaries';
-import HeroBanner from '@/components/home/HeroBanner';
-import TopRatedNotaries from '@/components/home/TopRatedNotaries';
-import ValueProposition from '@/components/home/ValueProposition';
+ // src/app/notaries/page.tsx
+'use client';
 
-export default async function Home() {
-  try {
-    const result = await fetchNotaries({}, 3, 0); // Limit to 3 for homepage
-    console.log('fetchNotaries result:', result); // Debug log
-    const notaries = result?.data ?? [];
-    const total = result?.total ?? 0;
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import NotaryCard from '@/components/notaries/NotaryCard';
+import SearchForm from '@/components/search/SearchForm';
+import Pagination from '@/components/ui/Pagination';
+import { Notary } from '@/types/notary';
 
-    if (!notaries || notaries.length === 0) {
-      console.warn('No notaries found or data is invalid:', { total });
-      return (
-        <div className="bg-background">
-          <HeroBanner />
-          <section className="py-10 px-4 text-center">
-            <p className="text-text-dark">No top-rated notaries available at this time.</p>
-          </section>
-          <ValueProposition />
-        </div>
-      );
+interface NotariesResponse {
+  notaries: Notary[];
+  total: number;
+}
+
+export default function NotariesPage() {
+  const searchParams = useSearchParams();
+  const [notaries, setNotaries] = useState<Notary[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const currentPage = Number(searchParams.get('page')) || 1;
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    async function fetchNotaries() {
+      try {
+        setLoading(true);
+        const params = new URLSearchParams(searchParams.toString());
+        const response = await fetch(`/api/notaries?${params.toString()}`);
+        if (!response.ok) throw new Error('Failed to fetch notaries');
+        const data: NotariesResponse = await response.json();
+        setNotaries(data.notaries);
+        setTotalPages(Math.ceil(data.total / itemsPerPage));
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
     }
 
+    fetchNotaries();
+  }, [searchParams]);
+
+  if (loading) {
     return (
-      <div className="bg-background">
-        <HeroBanner />
-        <TopRatedNotaries notaries={notaries} />
-        <ValueProposition />
-      </div>
-    );
-  } catch (error) {
-    console.error('Error fetching notaries:', error);
-    return (
-      <div className="bg-background">
-        <HeroBanner />
-        <section className="py-10 px-4 text-center">
-          <p className="text-text-dark">Error loading notaries. Please try again later.</p>
-        </section>
-        <ValueProposition />
+      <div className="container mx-auto px-4 py-8">
+        <p>Loading...</p>
       </div>
     );
   }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <p className="text-red-600">{error}</p>
+      </div>
+    );
+  }
+
+  return (
+    <main className="container mx-auto px-4 py-8">
+      {/* Search Form */}
+      <div className="mb-8">
+        <SearchForm />
+      </div>
+
+      {/* Results */}
+      <div className="space-y-6">
+        {notaries.map((notary) => (
+          <NotaryCard key={notary.id} notary={notary} />
+        ))}
+        {notaries.length === 0 && (
+          <p className="text-center text-gray-600">No notaries found matching your criteria.</p>
+        )}
+      </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="mt-8">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            baseUrl="/notaries"
+            searchParams={Object.fromEntries(searchParams.entries())}
+          />
+        </div>
+      )}
+    </main>
+  );
 }
