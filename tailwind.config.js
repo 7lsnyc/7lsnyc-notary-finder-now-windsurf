@@ -8,26 +8,37 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#2563eb', // Blue 600
-          light: '#60a5fa',   // Blue 400
-        },
-        accent: {
-          DEFAULT: '#f59e0b', // Amber 500
-          light: '#fbbf24',   // Amber 400
-        },
+        primary: '#007BFF',
+        secondary: '#E6F0FA',
+        accent: '#F5A623',
         text: {
-          DEFAULT: '#1f2937', // Gray 800
-          light: '#6b7280',   // Gray 500
+          dark: '#333333',
+          light: '#FFFFFF',
         },
-        background: {
-          DEFAULT: '#ffffff', // White
-          alt: '#f3f4f6',    // Gray 100
-        },
+        gray: '#CCCCCC',
+        success: '#28A745',
+      },
+      fontFamily: {
+        poppins: ['var(--font-poppins)'],
+        inter: ['var(--font-inter)'],
+      },
+      fontSize: {
+        h1: '36px',
+        h2: '24px',
+        h3: '18px',
+        body: '14px',
+        small: '12px',
+      },
+      spacing: {
+        section: '20px',
+        component: '10px',
+        card: '15px',
+      },
+      borderRadius: {
+        DEFAULT: '8px',
       },
       boxShadow: {
-        'card': '0 2px 4px rgba(0, 0, 0, 0.05)',
-        'card-hover': '0 4px 6px rgba(0, 0, 0, 0.1)',
+        card: '0 2px 4px rgba(0,0,0,0.1)',
       },
     },
   },

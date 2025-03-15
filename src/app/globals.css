@@ -4,19 +4,19 @@
 
 @layer base {
   body {
-    @apply bg-background text-text;
+    @apply bg-white text-text-dark font-inter;
   }
 }
 
 @layer components {
   /* Layout */
   .container {
-    @apply mx-auto px-4 max-w-7xl;
+    @apply mx-auto px-section max-w-7xl;
   }
 
   /* Form Elements */
   .input {
-    @apply w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none;
+    @apply w-full px-4 py-2 rounded border border-gray focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none;
   }
 
   .select {
@@ -24,21 +24,16 @@
   }
 
   .label {
-    @apply block text-sm font-medium text-gray-700 mb-1;
+    @apply block text-body font-medium text-text-dark mb-component;
   }
 
   /* Buttons */
   .btn-primary {
-    @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 inline-flex items-center;
+    @apply h-10 px-6 bg-primary text-text-light rounded hover:bg-primary/90 inline-flex items-center font-poppins transition-colors;
   }
 
   /* Feature Badges */
   .feature-badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-800;
-  }
-
-  /* Icons */
-  .icon-sm {
-    @apply w-4 h-4;
+    @apply inline-flex items-center px-3 py-1 rounded text-small bg-secondary text-text-dark;
   }
 }
