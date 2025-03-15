@@ -1,9 +1,9 @@
 import HeroBanner from '@/components/home/HeroBanner';
 import TopRatedNotaries from '@/components/home/TopRatedNotaries';
-import { supabase } from '@/lib/supabase';
-import { Notary } from '@/types/notary';
+import { getSupabaseClient } from '@/lib/supabase';
 
 async function getTopNotaries() {
+  const supabase = getSupabaseClient();
   const { data } = await supabase
     .from('notaries')
     .select('*')
