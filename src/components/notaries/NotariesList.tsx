@@ -6,11 +6,6 @@ import NotaryCard from '@/components/notaries/NotaryCard';
 import Pagination from '@/components/ui/Pagination';
 import { Notary } from '@/types/notary';
 
-interface NotariesResponse {
-  notaries: Notary[];
-  total: number;
-}
-
 export default function NotariesList() {
   const searchParams = useSearchParams();
   const [notaries, setNotaries] = useState<Notary[]>([]);
@@ -21,24 +16,34 @@ export default function NotariesList() {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    async function fetchNotaries() {
+    const fetchNotaries = async () => {
       try {
         const params = new URLSearchParams(searchParams.toString());
+        params.set('per_page', String(itemsPerPage));
+        
         const response = await fetch(`/api/notaries?${params.toString()}`);
         if (!response.ok) throw new Error('Failed to fetch notaries');
-        const data: NotariesResponse = await response.json();
+        
+        const data = await response.json();
         setNotaries(data.notaries);
         setTotalPages(Math.ceil(data.total / itemsPerPage));
+        setError(null);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        setError(err instanceof Error ? err.message : 'Failed to load notaries');
+        setNotaries([]);
+        setTotalPages(1);
       }
-    }
+    };
 
     fetchNotaries();
   }, [searchParams]);
 
   if (error) {
-    return <p className="text-red-600">{error}</p>;
+    return (
+      <div className="text-center text-red-600 py-4">
+        {error}
+      </div>
+    );
   }
 
   return (
@@ -48,7 +53,9 @@ export default function NotariesList() {
           <NotaryCard key={notary.id} notary={notary} />
         ))}
         {notaries.length === 0 && (
-          <p className="text-center text-gray-600">No notaries found matching your criteria.</p>
+          <div className="text-center text-gray-600 py-4">
+            No notaries found matching your criteria.
+          </div>
         )}
       </div>
 

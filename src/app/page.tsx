@@ -3,19 +3,24 @@ import TopRatedNotaries from '@/components/home/TopRatedNotaries';
 import { supabase } from '@/lib/supabase';
 import { Notary } from '@/types/notary';
 
-export default async function Home() {
-  // Fetch top 3 rated notaries for homepage
-  const { data: notaries } = await supabase
+async function getTopNotaries() {
+  const { data } = await supabase
     .from('notaries')
     .select('*')
     .order('rating', { ascending: false })
     .order('review_count', { ascending: false })
     .limit(3);
+  
+  return data || [];
+}
+
+export default async function Home() {
+  const notaries = await getTopNotaries();
 
   return (
-    <main>
+    <main className="min-h-screen bg-gray-50">
       <HeroBanner />
-      <TopRatedNotaries notaries={notaries || []} />
+      <TopRatedNotaries notaries={notaries} />
     </main>
   );
 }

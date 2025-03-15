@@ -2,11 +2,11 @@
 import { Notary } from '@/types/notary';
 import NotaryCard from '@/components/notaries/NotaryCard';
 
-interface TopRatedNotariesProps {
-  notaries: Notary[];
-}
+export default function TopRatedNotaries({ notaries }: { notaries: Notary[] }) {
+  if (!notaries.length) {
+    return null;
+  }
 
-export default function TopRatedNotaries({ notaries }: TopRatedNotariesProps) {
   return (
     <section className="py-12 bg-gray-50">
       <div className="container mx-auto px-4">
