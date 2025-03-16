@@ -43,7 +43,7 @@ export function SearchForm({
           type="text"
           name="location"
           defaultValue={initialLocation}
-          className="flex-1 py-2 focus:outline-none font-inter"
+          className="flex-1 py-2 focus:outline-none font-inter text-text-dark"
           required
           aria-label="Search by location"
           placeholder={locationPlaceholder}
