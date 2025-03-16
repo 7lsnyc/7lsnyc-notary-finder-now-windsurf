@@ -65,7 +65,8 @@ export function SearchForm({
       <Button
         type="submit"
         disabled={isLoading}
-        className="whitespace-nowrap"
+        variant="primary"
+        className="bg-brand-primary hover:bg-brand-primary/90 px-6 py-2 font-poppins"
       >
         {isLoading ? 'Searching...' : 'Search'}
       </Button>
