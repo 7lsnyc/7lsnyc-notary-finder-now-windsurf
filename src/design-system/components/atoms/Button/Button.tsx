@@ -2,12 +2,13 @@ import { ButtonHTMLAttributes } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'text';
+  variant?: 'cta' | 'primary' | 'secondary' | 'text';
   size?: 'small' | 'medium' | 'large';
   className?: string;
 }
 
 const variants = {
+  cta: 'bg-accent text-white hover:bg-accent/90',
   primary: 'bg-brand-primary text-white hover:bg-brand-primary/90',
   secondary: 'bg-brand-secondary text-brand-primary hover:bg-brand-secondary/90',
   text: 'text-text-dark hover:text-brand-primary',
