@@ -30,7 +30,7 @@ export function Header({
               <Link
                 key={href}
                 href={href}
-                className="text-text-dark hover:text-primary transition-colors duration-200 font-inter text-[14px]"
+                className="header-nav-link"
               >
                 {label}
               </Link>
@@ -40,7 +40,7 @@ export function Header({
           {/* CTA Button */}
           <Link
             href="/request-listing"
-            className="hidden md:block bg-accent text-white px-4 py-2 rounded font-inter text-[14px] transition-colors hover:bg-accent/90"
+            className="hidden md:block header-cta"
           >
             Request Featured Listing
           </Link>
