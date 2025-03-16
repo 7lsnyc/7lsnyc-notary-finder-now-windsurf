@@ -1,51 +1,42 @@
+/**
+ * @jest-environment jsdom
+ */
 import { render, screen } from '@testing-library/react';
 import RootLayout from './layout';
 
+// Mock Next.js font loading
+jest.mock('next/font/google', () => ({
+  Inter: () => ({
+    className: 'font-inter',
+    variable: '--font-inter'
+  }),
+  Poppins: () => ({
+    className: 'font-poppins',
+    variable: '--font-poppins'
+  })
+}));
+
+// Mock components
+jest.mock('../design-system/components/molecules/Header', () => ({
+  Header: () => <header data-testid="mock-header">Header</header>
+}));
+
+jest.mock('../design-system/components/molecules/Footer', () => ({
+  Footer: () => <footer data-testid="mock-footer">Footer</footer>
+}));
+
 describe('RootLayout', () => {
-  it('renders header with navigation items from design', () => {
-    render(
-      <RootLayout>
-        <div>Test content</div>
-      </RootLayout>
-    );
+  it('renders layout structure correctly', () => {
+    const testContent = 'Test Content';
+    render(<RootLayout>{testContent}</RootLayout>);
 
-    // Logo
-    expect(screen.getByText('Notary Finder Now')).toBeInTheDocument();
+    // Verify header and footer are present
+    expect(screen.getByTestId('mock-header')).toBeInTheDocument();
+    expect(screen.getByTestId('mock-footer')).toBeInTheDocument();
 
-    // Navigation items
-    expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('Find a Notary')).toBeInTheDocument();
-    expect(screen.getByText('Services')).toBeInTheDocument();
-    expect(screen.getByText('About')).toBeInTheDocument();
-    expect(screen.getByText('Contact')).toBeInTheDocument();
-
-    // CTA Button
-    expect(screen.getByText('Request Featured Listing')).toBeInTheDocument();
-  });
-
-  it('applies design-specified styles', () => {
-    render(
-      <RootLayout>
-        <div>Test content</div>
-      </RootLayout>
-    );
-
-    // Header styles
-    const header = screen.getByRole('banner');
-    expect(header).toHaveClass('bg-white');
-
-    // Navigation links
-    const navLinks = screen.getAllByRole('link');
-    navLinks.forEach(link => {
-      if (!link.textContent?.includes('Request Featured Listing') && !link.textContent?.includes('Notary Finder Now')) {
-        expect(link).toHaveClass('text-text-dark');
-        expect(link).toHaveClass('hover:text-primary');
-      }
-    });
-
-    // CTA button
-    const ctaButton = screen.getByText('Request Featured Listing');
-    expect(ctaButton).toHaveClass('bg-accent');
-    expect(ctaButton).toHaveClass('text-white');
+    // Verify main content area
+    const main = screen.getByRole('main');
+    expect(main).toHaveClass('flex-grow');
+    expect(main).toHaveTextContent(testContent);
   });
 });

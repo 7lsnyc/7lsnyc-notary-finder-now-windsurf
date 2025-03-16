@@ -44,14 +44,14 @@ export const brandConfig = {
     themes: {
       light: {
         icon: {
-          background: 'bg-[#2463EB]',
+          background: 'bg-primary',
           foreground: 'text-white'
         },
         text: 'text-text-dark'
       },
       dark: {
         icon: {
-          background: 'bg-[#2463EB]',
+          background: 'bg-primary',
           foreground: 'text-white'
         },
         text: 'text-white'
@@ -59,7 +59,7 @@ export const brandConfig = {
       minimal: {
         icon: {
           background: 'bg-transparent',
-          foreground: 'text-[#2463EB]'
+          foreground: 'text-primary'
         },
         text: 'text-text-dark'
       }

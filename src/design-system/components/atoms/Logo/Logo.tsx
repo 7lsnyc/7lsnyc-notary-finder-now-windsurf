@@ -1,6 +1,8 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { brandConfig } from '../../../config/brand';
+import { siteConfig } from '../../../config/siteConfig';
+import { themeConfig } from '../../../config/themeConfig';
 
 type LogoVariant = keyof typeof brandConfig.logo.variants;
 type LogoLayout = keyof typeof brandConfig.logo.layout;
@@ -43,7 +45,7 @@ const DefaultIcon = ({ className }: { className?: string }) => (
 );
 
 export function Logo({ 
-  text = brandConfig.name,
+  text = siteConfig.site.name,
   icon,
   variant = 'default',
   layout = 'horizontal',
@@ -63,19 +65,19 @@ export function Logo({
         data-testid="logo-square"
         className={twMerge(
           variantConfig.iconSize,
-          themeConfig.icon.background,
+          'bg-primary',
           layoutConfig.iconPosition,
           'rounded-lg flex items-center justify-center'
         )}
       >
-        {icon || <DefaultIcon className={themeConfig.icon.foreground} />}
+        {icon || <DefaultIcon className="text-white" />}
       </div>
       <span 
         data-testid="logo-text"
         className={twMerge(
-          'block font-inter font-bold leading-none',
+          'block font-primary font-bold leading-none',
           variantConfig.textSize,
-          themeConfig.text
+          theme === 'dark' ? 'text-white' : 'text-text-primary'
         )}
       >
         {text}
