@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 import { Logo } from '../../atoms/Logo';
+import { siteConfig } from '../../../config/siteConfig';
 
 interface HeaderProps {
   navigation: Array<{
@@ -16,15 +17,15 @@ export function Header({
 }: HeaderProps) {
   return (
     <header className={twMerge('bg-white shadow-[0_2px_4px_rgba(0,0,0,0.1)]', className)}>
-      <div className="max-w-7xl mx-auto px-[20px]">
+      <div className="container">
         <div className="flex items-center h-[70px] justify-between">
           {/* Logo */}
-          <Link href="/" aria-label="Home">
+          <Link href="/" className="shrink-0" aria-label={siteConfig.site.name}>
             <Logo variant="default" layout="horizontal" theme="light" />
           </Link>
 
           {/* Navigation - centered */}
-          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-[20px]">
+          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-4">
             {navigation.map(({ label, href }) => (
               <Link
                 key={href}
@@ -39,7 +40,7 @@ export function Header({
           {/* CTA Button */}
           <Link
             href="/request-listing"
-            className="hidden md:block bg-accent text-white px-4 py-2 rounded-[8px] font-inter text-[14px] hover:bg-accent/90 transition-colors"
+            className="hidden md:block bg-accent text-white px-4 py-2 rounded font-inter text-[14px] transition-colors hover:bg-accent/90"
           >
             Request Featured Listing
           </Link>
@@ -47,7 +48,7 @@ export function Header({
           {/* Mobile menu button */}
           <button
             type="button"
-            className="md:hidden p-[10px] rounded-[8px] text-text-dark"
+            className="md:hidden rounded text-text-dark"
             aria-label="Open menu"
           >
             <svg
