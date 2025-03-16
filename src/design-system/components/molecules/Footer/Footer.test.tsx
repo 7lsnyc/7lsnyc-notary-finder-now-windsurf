@@ -19,11 +19,14 @@ describe('Footer', () => {
     expect(logoLink).toHaveAttribute('href', '/');
   });
 
-  it('renders current year in copyright notice', () => {
+  it('renders copyright notice with Now Directories link', () => {
     render(<Footer />);
     
-    const currentYear = new Date().getFullYear().toString();
-    expect(screen.getByText(new RegExp(currentYear))).toBeInTheDocument();
+    const copyrightLink = screen.getByRole('link', { name: /now directories/i });
+    expect(copyrightLink).toHaveAttribute('href', '/');
+    expect(screen.getByText(/©/)).toBeInTheDocument();
+    expect(screen.getByText(/2025/)).toBeInTheDocument();
+    expect(screen.getByText(/all rights reserved/i)).toBeInTheDocument();
   });
 
   it('renders all navigation links', () => {
@@ -33,34 +36,31 @@ describe('Footer', () => {
     const quickLinksSection = screen.getByRole('heading', { name: /quick links/i }).parentElement;
     expect(quickLinksSection).toBeInTheDocument();
     const quickLinks = quickLinksSection?.querySelectorAll('a');
-    expect(quickLinks?.length).toBe(5);
+    expect(quickLinks?.length).toBe(4);
     expect(quickLinks?.[0]).toHaveTextContent(/home/i);
     expect(quickLinks?.[1]).toHaveTextContent(/find a notary/i);
-    expect(quickLinks?.[2]).toHaveTextContent(/services/i);
-    expect(quickLinks?.[3]).toHaveTextContent(/about us/i);
-    expect(quickLinks?.[4]).toHaveTextContent(/contact/i);
+    expect(quickLinks?.[2]).toHaveTextContent(/about us/i);
+    expect(quickLinks?.[3]).toHaveTextContent(/contact/i);
 
     // Services
     const servicesSection = screen.getByRole('heading', { name: /services/i }).parentElement;
     expect(servicesSection).toBeInTheDocument();
     const serviceLinks = servicesSection?.querySelectorAll('a');
-    expect(serviceLinks?.length).toBe(5);
+    expect(serviceLinks?.length).toBe(4);
     expect(serviceLinks?.[0]).toHaveTextContent(/mobile notaries/i);
     expect(serviceLinks?.[1]).toHaveTextContent(/24-hour availability/i);
-    expect(serviceLinks?.[2]).toHaveTextContent(/free services/i);
-    expect(serviceLinks?.[3]).toHaveTextContent(/loan signing/i);
-    expect(serviceLinks?.[4]).toHaveTextContent(/real estate/i);
+    expect(serviceLinks?.[2]).toHaveTextContent(/remote notaries/i);
+    expect(serviceLinks?.[3]).toHaveTextContent(/free services/i);
 
     // Support
     const supportSection = screen.getByRole('heading', { name: /support/i }).parentElement;
     expect(supportSection).toBeInTheDocument();
     const supportLinks = supportSection?.querySelectorAll('a');
-    expect(supportLinks?.length).toBe(5);
+    expect(supportLinks?.length).toBe(4);
     expect(supportLinks?.[0]).toHaveTextContent(/faq/i);
     expect(supportLinks?.[1]).toHaveTextContent(/privacy policy/i);
     expect(supportLinks?.[2]).toHaveTextContent(/terms of service/i);
-    expect(supportLinks?.[3]).toHaveTextContent(/for notaries/i);
-    expect(supportLinks?.[4]).toHaveTextContent(/help center/i);
+    expect(supportLinks?.[3]).toHaveTextContent(/request featured listing/i);
   });
 
   it('has correct semantic structure', () => {

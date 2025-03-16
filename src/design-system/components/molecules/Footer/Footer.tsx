@@ -26,7 +26,6 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link href="/" className="footer-link">Home</Link></li>
               <li><Link href="/find-a-notary" className="footer-link">Find a Notary</Link></li>
-              <li><Link href="/services" className="footer-link">Services</Link></li>
               <li><Link href="/about-us" className="footer-link">About Us</Link></li>
               <li><Link href="/contact" className="footer-link">Contact</Link></li>
             </ul>
@@ -38,9 +37,8 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link href="/mobile-notaries" className="footer-link">Mobile Notaries</Link></li>
               <li><Link href="/24-hour-availability" className="footer-link">24-Hour Availability</Link></li>
+              <li><Link href="/remote-notaries" className="footer-link">Remote Notaries</Link></li>
               <li><Link href="/free-services" className="footer-link">Free Services</Link></li>
-              <li><Link href="/loan-signing" className="footer-link">Loan Signing</Link></li>
-              <li><Link href="/real-estate" className="footer-link">Real Estate</Link></li>
             </ul>
           </div>
 
@@ -51,8 +49,7 @@ const Footer = () => {
               <li><Link href="/faq" className="footer-link">FAQ</Link></li>
               <li><Link href="/privacy-policy" className="footer-link">Privacy Policy</Link></li>
               <li><Link href="/terms-of-service" className="footer-link">Terms of Service</Link></li>
-              <li><Link href="/for-notaries" className="footer-link">For Notaries</Link></li>
-              <li><Link href="/help-center" className="footer-link">Help Center</Link></li>
+              <li><Link href="/request-listing" className="footer-link">Request Featured Listing</Link></li>
             </ul>
           </div>
         </nav>
@@ -60,7 +57,7 @@ const Footer = () => {
         {/* Copyright Section */}
         <div className="mt-12 pt-8 border-t border-text-secondary/20">
           <p className="text-sm text-center text-text-secondary">
-            {currentYear} Notary Finder Now. All rights reserved.
+            &copy; 2025 <Link href="/" className="hover:text-text-primary">Now Directories</Link>. All rights reserved.
           </p>
         </div>
       </div>
