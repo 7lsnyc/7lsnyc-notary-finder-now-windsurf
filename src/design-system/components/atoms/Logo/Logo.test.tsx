@@ -17,15 +17,16 @@ describe('Logo', () => {
     expect(logoSquare).toHaveClass(
       'w-8',
       'h-8',
-      'bg-primary',
+      'bg-[#2463EB]',
       'rounded-lg',
       'flex',
       'items-center',
-      'justify-center'
+      'justify-center',
+      'order-first'
     );
     
     const brandText = screen.getByText('Notary Finder Now');
-    expect(brandText).toHaveClass('font-inter', 'font-bold', 'text-[20px]');
+    expect(brandText).toHaveClass('font-inter', 'font-bold', 'text-[18px]');
   });
 
   it('accepts custom text', () => {

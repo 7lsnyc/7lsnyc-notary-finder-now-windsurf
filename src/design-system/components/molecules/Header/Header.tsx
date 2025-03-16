@@ -19,8 +19,8 @@ export function Header({
       <div className="max-w-7xl mx-auto px-[20px]">
         <div className="flex items-center h-[70px] justify-between">
           {/* Logo */}
-          <Link href="/" className="shrink-0">
-            <Logo />
+          <Link href="/" aria-label="Home">
+            <Logo variant="default" layout="horizontal" theme="light" />
           </Link>
 
           {/* Navigation - centered */}

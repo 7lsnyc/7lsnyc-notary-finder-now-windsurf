@@ -7,12 +7,12 @@ export const brandConfig = {
         textSize: 'text-[14px]',
       },
       small: {
-        iconSize: 'w-6 h-6',
+        iconSize: 'w-7 h-7',
         textSize: 'text-[16px]',
       },
       default: {
         iconSize: 'w-8 h-8',
-        textSize: 'text-[20px]',
+        textSize: 'text-[18px] font-inter',
       },
       large: {
         iconSize: 'w-10 h-10',
@@ -44,25 +44,25 @@ export const brandConfig = {
     themes: {
       light: {
         icon: {
-          background: 'bg-primary',
-          foreground: 'text-white',
+          background: 'bg-[#2463EB]',
+          foreground: 'text-white'
         },
-        text: 'text-text-dark',
+        text: 'text-text-dark'
       },
       dark: {
         icon: {
-          background: 'bg-white',
-          foreground: 'text-primary',
+          background: 'bg-[#2463EB]',
+          foreground: 'text-white'
         },
-        text: 'text-white',
+        text: 'text-white'
       },
       minimal: {
         icon: {
           background: 'bg-transparent',
-          foreground: 'text-primary',
+          foreground: 'text-[#2463EB]'
         },
-        text: 'text-text-dark',
-      },
+        text: 'text-text-dark'
+      }
     },
   },
 } as const;
