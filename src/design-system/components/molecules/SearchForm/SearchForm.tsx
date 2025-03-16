@@ -1,71 +1,83 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent } from 'react';
 import { Button } from '../../atoms/Button';
 
 interface SearchFormProps {
-  onSubmit: (searchTerm: string) => void;
-  placeholder?: string;
+  onSubmit: (location: string, service: string) => void;
+  locationPlaceholder?: string;
   isLoading?: boolean;
   error?: string;
-  initialValue?: string;
+  initialLocation?: string;
+  initialService?: string;
+  className?: string;
 }
 
 export function SearchForm({
   onSubmit,
-  placeholder = 'Search for notaries in your area...',
+  locationPlaceholder = 'Enter your location',
   isLoading = false,
   error,
-  initialValue = '',
+  initialLocation = '',
+  initialService = '',
+  className = '',
 }: SearchFormProps) {
-  const [searchTerm, setSearchTerm] = useState(initialValue);
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(searchTerm);
+    const formData = new FormData(e.currentTarget);
+    const location = formData.get('location')?.toString() || '';
+    const service = formData.get('service')?.toString() || '';
+    onSubmit(location, service);
   };
 
   return (
     <form
       role="search"
       onSubmit={handleSubmit}
-      className="w-full flex flex-col gap-4 px-4 md:px-6"
+      className={`bg-white rounded shadow-card p-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 ${className}`}
     >
-      <div className="w-full flex flex-col sm:flex-row gap-4">
-        <div className="w-full min-w-0">
-          <input
-            type="search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={placeholder}
-            className={`
-              w-full px-4 py-2 rounded
-              border ${error ? 'border-red-500' : 'border-text-secondary'}
-              focus:border-primary focus:ring-2 focus:ring-primary/20
-              font-inter text-text-dark placeholder:text-text-secondary
-              outline-none transition-colors
-              text-base sm:text-sm
-            `}
-            aria-label="Search"
-            aria-invalid={!!error}
-            aria-describedby={error ? 'search-error' : undefined}
-          />
-          {error && (
-            <p
-              id="search-error"
-              className="mt-1 text-sm text-red-500 font-inter"
-              role="alert"
-            >
-              {error}
-            </p>
-          )}
-        </div>
+      <div className="flex-1 flex items-center gap-2 px-3">
+        <svg className="w-5 h-5 text-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <input
+          type="text"
+          name="location"
+          defaultValue={initialLocation}
+          className="flex-1 py-2 focus:outline-none font-inter"
+          required
+          aria-label="Search by location"
+          placeholder={locationPlaceholder}
+          aria-invalid={!!error}
+          aria-describedby={error ? 'search-error' : undefined}
+        />
       </div>
+      <select 
+        name="service"
+        defaultValue={initialService}
+        className="px-3 py-2 border-l text-text-dark focus:outline-none bg-transparent font-inter"
+        aria-label="Select notary service type"
+      >
+        <option value="">Select service type</option>
+        <option value="mobile">Mobile Notary</option>
+        <option value="remote">Remote Notary</option>
+        <option value="office">Office Location</option>
+      </select>
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full sm:w-auto sm:self-end"
+        className="whitespace-nowrap"
       >
         {isLoading ? 'Searching...' : 'Search'}
       </Button>
+      {error && (
+        <p
+          id="search-error"
+          className="mt-1 text-sm text-red-500 font-inter"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
     </form>
   );
 }
