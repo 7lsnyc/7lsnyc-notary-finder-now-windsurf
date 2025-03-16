@@ -50,6 +50,15 @@ describe('Button', () => {
     expect(button).not.toHaveClass('bg-brand-primary');
   });
 
+  it('renders cta variant correctly', () => {
+    render(<Button variant="cta">CTA</Button>);
+    const button = screen.getByRole('button');
+    
+    expect(button).toHaveClass('bg-brand-accent');
+    expect(button).toHaveClass('text-white');
+    expect(button).toHaveClass('hover:bg-brand-accent/90');
+  });
+
   it('renders small size correctly', () => {
     render(<Button size="small">Small</Button>);
     const button = screen.getByRole('button');

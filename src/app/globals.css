@@ -16,7 +16,7 @@
 @layer components {
   /* Header - per memory e69200b3 */
   .header-nav-link {
-    @apply text-text-dark hover:text-primary font-inter text-[14px] transition-colors duration-200;
+    @apply text-text-dark hover:text-brand-primary font-inter text-[14px] transition-colors duration-200;
   }
 
   .header-cta {
@@ -38,7 +38,7 @@
 
   /* Form Elements */
   .input {
-    @apply w-full px-4 py-2 rounded border border-text-secondary focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none;
+    @apply w-full px-4 py-2 rounded border border-text-secondary focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 focus:outline-none;
   }
 
   .select {
@@ -51,6 +51,10 @@
 
   /* Buttons */
   .btn-primary {
+    @apply h-[40px] px-6 bg-brand-primary text-white rounded hover:bg-brand-primary/90 inline-flex items-center font-inter transition-colors;
+  }
+
+  .btn-cta {
     @apply h-[40px] px-6 bg-accent text-white rounded hover:bg-accent/90 inline-flex items-center font-inter transition-colors;
   }
 

@@ -40,50 +40,75 @@ describe('Configuration System', () => {
       expect(() => ThemeConfigSchema.parse(themeConfig)).not.toThrow();
     });
 
-    it('contains all required color definitions', () => {
-      expect(themeConfig.colors.brand).toHaveProperty('primary');
-      expect(themeConfig.colors.brand).toHaveProperty('secondary');
-      expect(themeConfig.colors.brand).toHaveProperty('accent');
+    it('has required color properties', () => {
+      expect(themeConfig.colors.brand.primary).toBeDefined();
+      expect(themeConfig.colors.brand.secondary).toBeDefined();
+      expect(themeConfig.colors.brand.accent).toBeDefined();
+      expect(themeConfig.colors.text.dark).toBeDefined();
+      expect(themeConfig.colors.text.primary).toBeDefined();
+      expect(themeConfig.colors.text.secondary).toBeDefined();
+    });
+
+    it('has required spacing properties', () => {
+      expect(themeConfig.spacing.container).toBeDefined();
+      expect(themeConfig.spacing.section).toBeDefined();
+      expect(themeConfig.spacing.component).toBeDefined();
     });
 
     it('contains typography settings', () => {
       expect(themeConfig.typography).toEqual({
         primary: 'Inter',
         secondary: 'Poppins',
+        body: {
+          size: '16px',
+          lineHeight: '24px',
+        },
+        small: {
+          size: '14px',
+          lineHeight: '20px',
+        },
       });
-    });
-
-    it('contains spacing definitions', () => {
-      expect(themeConfig.spacing).toHaveProperty('container');
-      expect(themeConfig.spacing).toHaveProperty('section');
     });
   });
 
   describe('Tailwind Configuration', () => {
     const tailwindConfig = generateTailwindConfig();
 
-    it('generates valid Tailwind theme configuration', () => {
-      expect(tailwindConfig).toHaveProperty('theme');
-      expect(tailwindConfig.theme).toHaveProperty('extend');
+    it('extends theme configuration', () => {
+      expect(tailwindConfig.theme.extend).toBeDefined();
+      expect(tailwindConfig.theme.extend.colors).toBeDefined();
+      expect(tailwindConfig.theme.extend.fontFamily).toBeDefined();
+      expect(tailwindConfig.theme.extend.maxWidth).toBeDefined();
+      expect(tailwindConfig.theme.extend.spacing).toBeDefined();
     });
 
-    it('maps theme colors to Tailwind configuration', () => {
+    it('maps brand colors to Tailwind configuration', () => {
       const { colors } = tailwindConfig.theme.extend;
-      expect(colors.primary).toBe(themeConfig.colors.brand.primary);
-      expect(colors.secondary).toBe(themeConfig.colors.brand.secondary);
-      expect(colors.accent).toBe(themeConfig.colors.brand.accent);
+      expect(colors.brand.primary).toBe(themeConfig.colors.brand.primary);
+      expect(colors.brand.secondary).toBe(themeConfig.colors.brand.secondary);
+      expect(colors.brand.accent).toBe(themeConfig.colors.brand.accent);
+    });
+
+    it('maps text colors to Tailwind configuration', () => {
+      const { colors } = tailwindConfig.theme.extend;
+      expect(colors.text.dark).toBe(themeConfig.colors.text.dark);
+      expect(colors.text.primary).toBe(themeConfig.colors.text.primary);
+      expect(colors.text.secondary).toBe(themeConfig.colors.text.secondary);
+    });
+
+    it('maps spacing to Tailwind configuration', () => {
+      const { spacing, maxWidth } = tailwindConfig.theme.extend;
+      expect(spacing.section).toBe(themeConfig.spacing.section);
+      expect(spacing.component).toBe(themeConfig.spacing.component);
+      expect(maxWidth.container).toBe(themeConfig.spacing.container);
     });
 
     it('maps typography settings to Tailwind configuration', () => {
       const { fontFamily } = tailwindConfig.theme.extend;
-      expect(fontFamily.primary[0]).toBe('var(--font-inter)');
-      expect(fontFamily.secondary[0]).toBe('var(--font-poppins)');
-    });
-
-    it('maps spacing settings to Tailwind configuration', () => {
-      const { maxWidth, spacing } = tailwindConfig.theme.extend;
-      expect(maxWidth.container).toBe(themeConfig.spacing.container);
-      expect(spacing.section).toBe(themeConfig.spacing.section);
+      expect(fontFamily).toEqual({
+        inter: ['var(--font-inter)'],
+        poppins: ['var(--font-poppins)'],
+      });
     });
   });
 });

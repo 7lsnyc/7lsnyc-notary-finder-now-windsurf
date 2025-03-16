@@ -58,9 +58,10 @@ export function SearchForm({
         aria-label="Select notary service type"
       >
         <option value="">Select service type</option>
-        <option value="mobile">Mobile Notary</option>
-        <option value="remote">Remote Notary</option>
-        <option value="office">Office Location</option>
+        <option value="mobile">Mobile</option>
+        <option value="remote">Remote</option>
+        <option value="24-7">24/7 Availability</option>
+        <option value="free">Free Services</option>
       </select>
       <Button
         type="submit"

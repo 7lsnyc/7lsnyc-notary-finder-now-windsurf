@@ -22,7 +22,7 @@ describe('Home', () => {
     )).toBeInTheDocument();
 
     // Search form
-    const form = screen.getByRole('form');
+    const form = screen.getByRole('search');
     expect(form).toBeInTheDocument();
     
     expect(screen.getByRole('textbox', { 
@@ -61,4 +61,4 @@ describe('Home', () => {
     expect(locationInput).toHaveValue('New York');
     expect(serviceSelect).toHaveValue('mobile');
   });
-});
+})

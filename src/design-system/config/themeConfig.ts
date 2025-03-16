@@ -8,15 +8,15 @@ export const themeConfig: ThemeConfig = {
       accent: '#F97315', // Orange for CTA - per memory fc54e17b
     },
     text: {
-      primary: '#1D4AC7', // Brand primary for hover states
+      primary: '#1F2937', // Dark text for primary content
       secondary: '#9CA3AF',
       dark: '#1F2937', // Per memory ef3afadf - nav items
-      light: '#FFFFFF', // Per memory ef3afadf - CTA text
+      light: '#FFFFFF', // For text on dark backgrounds
     },
     background: {
       primary: '#FFFFFF',
       secondary: '#F3F4F6',
-      dark: '#1F2937',
+      dark: '#1F2937', // For dark sections
     },
   },
   typography: {
@@ -41,7 +41,7 @@ export const themeConfig: ThemeConfig = {
       primary: {
         background: '#F97315', // Per memory fc54e17b - CTA color
         text: '#FFFFFF', // Per memory ef3afadf - CTA text color
-        hover: 'rgba(249, 115, 21, 0.9)', // Per memory e69200b3 - hover:bg-accent/90
+        hover: '#F97315/90', // Per memory e69200b3 - hover:bg-accent/90
         padding: '8px 16px', // Per memory e69200b3 - px-4 py-2
         height: '40px',
         borderRadius: '8px', // Per memory e69200b3 - rounded
@@ -49,7 +49,7 @@ export const themeConfig: ThemeConfig = {
       secondary: {
         background: '#E6F0FA',
         text: '#1D4AC7',
-        hover: 'rgba(29, 74, 199, 0.1)',
+        hover: '#1D4AC7/10',
         padding: '8px 16px',
         height: '40px',
         borderRadius: '8px',
@@ -69,7 +69,7 @@ export const themeConfig: ThemeConfig = {
       },
       footer: {
         text: '#9CA3AF',
-        hover: '#FFFFFF',
+        hover: '#1F2937',
         fontSize: '14px',
         fontFamily: 'Inter',
       },

@@ -16,7 +16,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-primary">
+    <div className="min-h-screen bg-brand-primary">
       <div className="max-w-4xl mx-auto px-4 py-20 text-center text-text-light">
         <h1 className="text-[30px] md:text-[40px] font-bold mb-4 font-poppins leading-tight">
           Find a Qualified Notary Near You — Now!

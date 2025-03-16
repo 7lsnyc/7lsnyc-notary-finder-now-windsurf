@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 import { Logo } from '../../atoms/Logo';
+import { Button } from '../../atoms/Button';
 import { siteConfig } from '../../../config/siteConfig';
 
 interface HeaderProps {
@@ -24,13 +25,13 @@ export function Header({
             <Logo variant="default" layout="horizontal" theme="light" />
           </Link>
 
-          {/* Navigation - centered */}
-          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 gap-4">
+          {/* Navigation - hidden for MVP */}
+          <nav className="hidden absolute left-1/2 -translate-x-1/2 gap-4">
             {navigation.map(({ label, href }) => (
               <Link
                 key={href}
                 href={href}
-                className="header-nav-link"
+                className="text-text-dark hover:text-brand-primary transition-colors duration-200 text-[14px] font-inter"
               >
                 {label}
               </Link>
@@ -38,33 +39,14 @@ export function Header({
           </nav>
 
           {/* CTA Button */}
-          <Link
-            href="/request-listing"
-            className="hidden md:block header-cta"
-          >
-            Request Featured Listing
-          </Link>
-
-          {/* Mobile menu button */}
-          <button
-            type="button"
-            className="md:hidden rounded text-text-dark"
-            aria-label="Open menu"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+          <div className="block">
+            <Link href="/request-listing">
+              <Button variant="cta" size="medium">
+                <span className="hidden md:inline">Request Featured Listing</span>
+                <span className="md:hidden">Get Featured</span>
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </header>

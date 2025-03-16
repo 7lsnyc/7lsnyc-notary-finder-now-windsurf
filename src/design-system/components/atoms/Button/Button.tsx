@@ -2,16 +2,16 @@ import { ButtonHTMLAttributes } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'cta' | 'primary' | 'secondary' | 'text';
+  variant?: 'primary' | 'secondary' | 'text' | 'cta';
   size?: 'small' | 'medium' | 'large';
   className?: string;
 }
 
 const variants = {
-  cta: 'bg-accent text-white hover:bg-accent/90',
   primary: 'bg-brand-primary text-white hover:bg-brand-primary/90',
   secondary: 'bg-brand-secondary text-brand-primary hover:bg-brand-secondary/90',
   text: 'text-text-dark hover:text-brand-primary',
+  cta: 'bg-brand-accent text-white hover:bg-brand-accent/90',
 };
 
 const sizes = {
@@ -31,15 +31,10 @@ export function Button({
   return (
     <button
       className={twMerge(
-        // Base styles
         'rounded font-inter transition-colors',
-        // Variant styles
         variants[variant],
-        // Size styles
         sizes[size],
-        // Disabled styles
         disabled && 'opacity-50 cursor-not-allowed',
-        // Custom classes
         className
       )}
       disabled={disabled}

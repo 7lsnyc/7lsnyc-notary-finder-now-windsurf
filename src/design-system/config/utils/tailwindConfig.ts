@@ -5,9 +5,11 @@ export const generateTailwindConfig = () => ({
     extend: {
       colors: {
         // Brand colors
-        primary: themeConfig.colors.brand.primary,
-        secondary: themeConfig.colors.brand.secondary,
-        accent: themeConfig.colors.brand.accent,
+        brand: {
+          primary: themeConfig.colors.brand.primary,
+          secondary: themeConfig.colors.brand.secondary,
+          accent: themeConfig.colors.brand.accent,
+        },
         // Text colors
         text: {
           dark: themeConfig.colors.text.dark,

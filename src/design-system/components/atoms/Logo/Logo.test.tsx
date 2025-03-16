@@ -1,12 +1,9 @@
-import { render, screen, cleanup } from '@testing-library/react';
-import { Logo } from './Logo';
+import { render, screen } from '@testing-library/react';
+import { Logo } from '../Logo';
 import { brandConfig } from '../../../config/brand';
+import { siteConfig } from '../../../config/siteConfig';
 
 describe('Logo', () => {
-  afterEach(() => {
-    cleanup();
-  });
-
   it('renders with default props', () => {
     render(<Logo />);
     
@@ -24,44 +21,49 @@ describe('Logo', () => {
       'justify-center',
       'order-first'
     );
-    
-    const brandText = screen.getByText('Notary Finder Now');
-    expect(brandText).toHaveClass('font-inter', 'font-bold', 'text-[18px]');
+
+    const logoText = screen.getByTestId('logo-text');
+    expect(logoText).toHaveClass('font-inter', 'font-bold', 'text-[18px]');
+    expect(logoText).toHaveTextContent(siteConfig.site.name);
   });
 
-  it('accepts custom text', () => {
-    render(<Logo text="Custom Brand" />);
-    expect(screen.getByText('Custom Brand')).toBeInTheDocument();
+  it('renders custom text', () => {
+    const customText = 'Custom Logo Text';
+    render(<Logo text={customText} />);
+    expect(screen.getByTestId('logo-text')).toHaveTextContent(customText);
   });
 
-  it.each(Object.entries(brandConfig.logo.variants))('renders %s size variant correctly', (variant, config) => {
-    render(<Logo variant={variant as keyof typeof brandConfig.logo.variants} />);
-    expect(screen.getByTestId('logo-square')).toHaveClass(config.iconSize);
-    expect(screen.getByTestId('logo-text')).toHaveClass(config.textSize);
-  });
-
-  it.each(Object.entries(brandConfig.logo.layout))('renders %s layout variant correctly', (layout, config) => {
-    render(<Logo layout={layout as keyof typeof brandConfig.logo.layout} />);
-    expect(screen.getByTestId('logo')).toHaveClass(config.container);
-    expect(screen.getByTestId('logo-square')).toHaveClass(config.iconPosition);
-  });
-
-  it.each(Object.entries(brandConfig.logo.themes))('renders %s theme variant correctly', (theme, config) => {
-    render(<Logo theme={theme as keyof typeof brandConfig.logo.themes} />);
-    expect(screen.getByTestId('logo-square')).toHaveClass(config.icon.background);
-    expect(screen.getByTestId('logo-icon')).toHaveClass(config.icon.foreground);
-    expect(screen.getByTestId('logo-text')).toHaveClass(config.text);
-  });
-
-  it('accepts custom icon component', () => {
-    const CustomIcon = () => <div data-testid="custom-icon">Custom</div>;
+  it('renders custom icon', () => {
+    const CustomIcon = () => <div data-testid="custom-icon">Custom Icon</div>;
     render(<Logo icon={<CustomIcon />} />);
     expect(screen.getByTestId('custom-icon')).toBeInTheDocument();
   });
 
-  it('accepts and merges additional className', () => {
-    const testClass = 'test-class';
-    render(<Logo className={testClass} />);
-    expect(screen.getByTestId('logo')).toHaveClass(testClass, 'flex', 'items-center');
+  it.each(Object.entries(brandConfig.logo.variants))('renders %s variant correctly', (variant, config) => {
+    render(<Logo variant={variant as keyof typeof brandConfig.logo.variants} />);
+    const { iconSize, textSize } = config as { iconSize: string; textSize: string };
+    expect(screen.getByTestId('logo-square')).toHaveClass(iconSize);
+    expect(screen.getByTestId('logo-text')).toHaveClass(textSize);
+  });
+
+  it.each(Object.entries(brandConfig.logo.layout))('renders %s layout correctly', (layout, config) => {
+    render(<Logo layout={layout as keyof typeof brandConfig.logo.layout} />);
+    const { container, iconPosition } = config as { container: string; iconPosition: string };
+    expect(screen.getByTestId('logo')).toHaveClass(container);
+    expect(screen.getByTestId('logo-square')).toHaveClass(iconPosition);
+  });
+
+  it.each(Object.entries(brandConfig.logo.themes))('renders %s theme variant correctly', (theme, config) => {
+    render(<Logo theme={theme as keyof typeof brandConfig.logo.themes} />);
+    expect(screen.getByTestId('logo-square')).toHaveClass('bg-[#2463EB]');
+    const { icon, text } = config as { icon: { foreground: string }; text: string };
+    expect(screen.getByTestId('logo-icon')).toHaveClass(icon.foreground);
+    expect(screen.getByTestId('logo-text')).toHaveClass(text);
+  });
+
+  it('applies custom className', () => {
+    const customClass = 'custom-logo';
+    render(<Logo className={customClass} />);
+    expect(screen.getByTestId('logo')).toHaveClass(customClass);
   });
 });

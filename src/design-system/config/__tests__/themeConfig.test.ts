@@ -20,6 +20,7 @@ describe('Theme Configuration', () => {
         primary: '#1F2937',
         secondary: '#9CA3AF',
         dark: '#1F2937',
+        light: '#FFFFFF',
       });
     });
 
@@ -27,14 +28,36 @@ describe('Theme Configuration', () => {
       expect(themeConfig.colors.background).toEqual({
         primary: '#FFFFFF',
         secondary: '#F3F4F6',
+        dark: '#1F2937',
+      });
+    });
+  });
+
+  describe('typography settings', () => {
+    it('has all required font families', () => {
+      expect(themeConfig.typography).toMatchObject({
+        primary: 'Inter',
+        secondary: 'Poppins',
+      });
+    });
+
+    it('has all required text sizes', () => {
+      expect(themeConfig.typography).toMatchObject({
+        body: {
+          size: '16px',
+          lineHeight: '24px',
+        },
+        small: {
+          size: '14px',
+          lineHeight: '20px',
+        },
       });
     });
   });
 
   describe('button variants', () => {
-    it('has primary button variant with all required properties', () => {
-      const primary = themeConfig.variants.button.primary;
-      expect(primary).toEqual({
+    it('has primary button styles', () => {
+      expect(themeConfig.variants.button.primary).toEqual({
         background: '#F97315',
         text: '#FFFFFF',
         hover: '#F97315/90',
@@ -44,9 +67,8 @@ describe('Theme Configuration', () => {
       });
     });
 
-    it('has secondary button variant with all required properties', () => {
-      const secondary = themeConfig.variants.button.secondary;
-      expect(secondary).toEqual({
+    it('has secondary button styles', () => {
+      expect(themeConfig.variants.button.secondary).toEqual({
         background: '#E6F0FA',
         text: '#1D4AC7',
         hover: '#1D4AC7/10',
@@ -56,9 +78,8 @@ describe('Theme Configuration', () => {
       });
     });
 
-    it('has text button variant with all required properties', () => {
-      const text = themeConfig.variants.button.text;
-      expect(text).toEqual({
+    it('has text button styles', () => {
+      expect(themeConfig.variants.button.text).toEqual({
         text: '#1F2937',
         hover: '#1D4AC7',
         padding: '8px',
@@ -67,9 +88,8 @@ describe('Theme Configuration', () => {
   });
 
   describe('navigation variants', () => {
-    it('has primary navigation variant with all required properties', () => {
-      const primary = themeConfig.variants.navigation.primary;
-      expect(primary).toEqual({
+    it('has primary navigation styles', () => {
+      expect(themeConfig.variants.navigation.primary).toEqual({
         text: '#1F2937',
         hover: '#1D4AC7',
         fontSize: '14px',
@@ -77,9 +97,8 @@ describe('Theme Configuration', () => {
       });
     });
 
-    it('has footer navigation variant with all required properties', () => {
-      const footer = themeConfig.variants.navigation.footer;
-      expect(footer).toEqual({
+    it('has footer navigation styles', () => {
+      expect(themeConfig.variants.navigation.footer).toEqual({
         text: '#9CA3AF',
         hover: '#1F2937',
         fontSize: '14px',
